@@ -54,6 +54,11 @@ public class BoardCell {
                 Math.abs(row - boardCell.row) == 1 && column == boardCell.column;
     }
 
+    int getLength(BoardCell toBoardCell) {
+        return 1 + Math.max(Math.abs(this.getRow() - toBoardCell.getRow()),
+                Math.abs(this.getColumn() - toBoardCell.getColumn()));
+    }
+
     public boolean isOccupied() {
         return ship != null;
     }

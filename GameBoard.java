@@ -28,10 +28,9 @@ public class GameBoard {
         message = "";
     }
 
-    public BoardCell getBoardCell(String coordinate) {
-        int row = coordinate.charAt(0) - 65;
-        int column = Integer.parseInt(coordinate.substring(1)) - 1;
-        return this.gameBoard[row][column];
+
+    public BoardCell getBoardCell(Coordinate coordinate) {
+        return this.gameBoard[coordinate.row][coordinate.column];
     }
 
     BoardCell[] getBoardCells() {
@@ -43,12 +42,11 @@ public class GameBoard {
             }
         }
         return cells;
-        //return returnValue.toArray(new BoardCell[returnValue.size()]);
     }
 
-    boolean isValidBoardCell(BoardCell boardCell) {
-        return 0 <= boardCell.getRow() && boardCell.getRow() <= 9 && 0 <= boardCell.getColumn() &&
-                boardCell.getColumn() <= 9;
+    boolean isValidCoordinate(Coordinate coordinate) {
+        return 0 <= coordinate.row && coordinate.row <= 9
+                && 0 <= coordinate.column && coordinate.column <= 9;
     }
 
     boolean isOccupiedBoardCell(BoardCell cell) {
@@ -68,7 +66,7 @@ public class GameBoard {
     boolean isValidPlacementOrder(PlacementOrder placementOrder) {
         // Check for valid, occupied and neighbouring cells
         for (BoardCell cell : placementOrder.getOccupiedBoardCells()) {
-            if (!this.isValidBoardCell(cell) || this.isOccupiedBoardCell(cell) || this.isNeighbourOccupied(cell)) {
+            if (this.isOccupiedBoardCell(cell) || this.isNeighbourOccupied(cell)) {
                 return false;
             }
         }
@@ -84,7 +82,7 @@ public class GameBoard {
     }
 
     public boolean isValidCannonShot(CannonShot cannonShot) {
-        if (this.isValidBoardCell(getBoardCell(cannonShot.getCoordinate()))) {
+        if (isValidCoordinate(cannonShot.getCoordinate())) {
             return true;
         } else {
             System.out.println("Error! You entered the wrong coordinates! Try again:");
@@ -92,18 +90,15 @@ public class GameBoard {
         }
     }
 
-    public void placeCannonShot(CannonShot cannonShot) {
-        message = getBoardCell(cannonShot.getCoordinate()).setCannonShot();
+    public void markCannonShot(CannonShot cannonShot) {
+        BoardCell bc = this.getBoardCell(cannonShot.getCoordinate());
+        message = bc.setCannonShot();
 
-    }
-
-    private int getLength(BoardCell fromBoardCell, BoardCell toBoardCell) {
-        return 1 + Math.max(Math.abs(fromBoardCell.getRow() - toBoardCell.getRow()),
-                Math.abs(fromBoardCell.getColumn() - toBoardCell.getColumn()));
     }
 
     public BoardCell[] getBoardCells(BoardCell fromBoardCell, BoardCell toBoardCell) {
-        BoardCell[] boardCells = new BoardCell[this.getLength(fromBoardCell, toBoardCell)];
+        int size = fromBoardCell.getLength(toBoardCell);
+        BoardCell[] boardCells = new BoardCell[size];
         int index = 0;
         if (fromBoardCell.getRow() == toBoardCell.getRow()) {
             // All cells on same row horizontally

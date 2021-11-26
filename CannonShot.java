@@ -1,13 +1,13 @@
 package battleship;
 
 public class CannonShot {
-    private final String coordinate;
+    final Coordinate coordinate;
 
     CannonShot(String coordinate) {
-        this.coordinate = coordinate;
+        this.coordinate = new Coordinate(coordinate);
     }
 
-    public String getCoordinate() {
+    public Coordinate getCoordinate() {
         return coordinate;
     }
 }

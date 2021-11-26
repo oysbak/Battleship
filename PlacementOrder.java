@@ -6,11 +6,10 @@ public class PlacementOrder {
     private final BoardCell[] occupiedBoardCells;
     private final Ship ship;
 
-    PlacementOrder(GameBoard gameBoard, Ship ship, String firstCoordinate, String secondCoordinate) {
+    PlacementOrder(GameBoard gameBoard, Ship ship, String placement) {
         this.ship = ship;
-
-        BoardCell firstBoardCell = gameBoard.getBoardCell(firstCoordinate);
-        BoardCell secondBoardCell = gameBoard.getBoardCell(secondCoordinate);
+        BoardCell firstBoardCell = gameBoard.getBoardCell(Coordinate.getFirstCoordinate(placement));
+        BoardCell secondBoardCell = gameBoard.getBoardCell(Coordinate.getSecondCoordinate(placement));
         if (secondBoardCell.getRow() > firstBoardCell.getRow() ||
                 secondBoardCell.getColumn() > firstBoardCell.getColumn()) {
             this.fromBoardCell = firstBoardCell;
