@@ -23,7 +23,7 @@ public class Ship {
         damage++;
     }
 
-    public boolean isSunk() {
+    public boolean isDestroyed() {
         return damage == length;
     }
 }

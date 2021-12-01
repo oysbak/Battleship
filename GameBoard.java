@@ -13,6 +13,10 @@ public class GameBoard {
         }
     }
 
+    public static void drawSeparator() {
+        System.out.println("---------------------");
+    }
+
     void draw(boolean isFogOfWar) {
         final String[] rowNotation = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J"};
         String header = "  1 2 3 4 5 6 7 8 9 10";
@@ -24,10 +28,11 @@ public class GameBoard {
             }
             System.out.println();
         }
-        System.out.println(message);
-        message = "";
+        if (message.length() > 0) {
+            System.out.println(message);
+            message = "";
+        }
     }
-
 
     public BoardCell getBoardCell(Coordinate coordinate) {
         return this.gameBoard[coordinate.row][coordinate.column];
@@ -78,21 +83,11 @@ public class GameBoard {
             boardCell.setShip(placementOrder.getShip());
             boardCell.setMark(Mark.OCCUPIED);
         }
-
-    }
-
-    public boolean isValidCannonShot(CannonShot cannonShot) {
-        if (isValidCoordinate(cannonShot.getCoordinate())) {
-            return true;
-        } else {
-            System.out.println("Error! You entered the wrong coordinates! Try again:");
-            return false;
-        }
     }
 
     public void markCannonShot(CannonShot cannonShot) {
-        BoardCell bc = this.getBoardCell(cannonShot.getCoordinate());
-        message = bc.setCannonShot();
+        BoardCell boardCell = this.getBoardCell(cannonShot.getCoordinate());
+        message = boardCell.setCannonShot();
 
     }
 

@@ -26,13 +26,14 @@ public class BoardCell {
     String setCannonShot() {
         String message;
         if (isOccupied()) {
-            message = "You hit a ship!";
             if (this.mark == Mark.OCCUPIED) {
                 this.ship.incrementDamage();
                 setMark(Mark.HIT);
             }
-            if (this.getShip().isSunk()) {
+            if (this.getShip().isDestroyed()) {
                 message = "You sank a ship! Specify a new target:";
+            } else {
+                message = "You hit a ship!";
             }
         } else {
             setMark(Mark.MISS);

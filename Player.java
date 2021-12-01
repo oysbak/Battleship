@@ -20,13 +20,13 @@ public class Player {
         };
     }
 
-    void drawGameBoard() {
-        gameBoard.draw(true);
+    void drawGameBoard(boolean isFogOfWar) {
+        gameBoard.draw(isFogOfWar);
     }
 
     public void requestCannonShot(Player opponent) {
         boolean approvedShot = false;
-        System.out.println("Take a shot!");
+        System.out.println(opponent.name + ", it's your turn:");
         do {
             CannonShot cannonShot = opponent.getCannonShot();
             if (gameBoard.isValidCoordinate(cannonShot.getCoordinate())) {
@@ -36,8 +36,8 @@ public class Player {
         } while (!approvedShot);
     }
 
-
     public void setUpGame() {
+        System.out.println(this.name + ", place your ships on the game field");
         gameBoard.draw(false);
         for (Ship ship : ships) {
             requestCellsForShip(ship);
@@ -51,7 +51,6 @@ public class Player {
         do {
             PlacementOrder placementOrder = getPlacementOrder(gameBoard, ship);
             if (placementOrder.isValid() && gameBoard.isValidPlacementOrder(placementOrder)) {
-                //System.out.println(placementOrder);
                 gameBoard.placeShip(placementOrder);
                 approvedPlacement = true;
             }
@@ -66,30 +65,17 @@ public class Player {
         return new CannonShot(scanner.nextLine());
     }
 
-    public boolean areAllShipsDestroyed() {
+    public boolean hasShips() {
         for (Ship ship : ships) {
-            if (!ship.isSunk()) {
-                return false;
+            if (!ship.isDestroyed()) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
-    void doQuickInitializeNo1() {
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[0], "F3 F7"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[1], "A1 D1"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[2], "J10 J8"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[3], "B9 D9"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[4], "I2 J2"));
-        gameBoard.draw(false);
-    }
-
-    void doQuickInitializeNo2() {
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[0], "J3 J7"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[1], "C8 F8"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[2], "A1 C1"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[3], "H1 H3"));
-        gameBoard.placeShip(new PlacementOrder(gameBoard, ships[4], "B5 C5"));
-        gameBoard.draw(false);
+    public void turnOverKeyboard() {
+        System.out.println("Press Enter and pass the move to another player");
+        scanner.nextLine();
     }
 }
